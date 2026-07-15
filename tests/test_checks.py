@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from wsl_dev_doctor.checks import CheckRunner, collect_checks
+from wsl_dev_doctor.checks import CheckRunner, _subprocess_run, collect_checks
 
 
 def test_collect_checks_flags_missing_wsl_and_docker() -> None:
@@ -66,3 +66,11 @@ def test_check_runner_truncates_command_error() -> None:
     ).command(("nope",))
     assert result.error is not None
     assert len(result.error) == 300
+
+
+def test_subprocess_runner_handles_missing_command() -> None:
+    returncode, stdout, stderr = _subprocess_run(("wsl-doctor-command-that-does-not-exist",))
+
+    assert returncode == 127
+    assert stdout == ""
+    assert stderr == "Command not found: wsl-doctor-command-that-does-not-exist"

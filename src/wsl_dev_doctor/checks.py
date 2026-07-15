@@ -42,7 +42,12 @@ class CheckRunner:
 
 
 def _subprocess_run(command: Command) -> CommandResult:
-    completed = subprocess.run(command, capture_output=True, text=True, check=False, timeout=5)
+    try:
+        completed = subprocess.run(command, capture_output=True, text=True, check=False, timeout=5)
+    except FileNotFoundError:
+        return 127, "", f"Command not found: {command[0]}"
+    except subprocess.TimeoutExpired:
+        return 124, "", f"Command timed out: {command[0]}"
     return completed.returncode, completed.stdout, completed.stderr
 
 
