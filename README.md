@@ -1,0 +1,98 @@
+# WSL Dev Environment Doctor
+
+A safe, read-only CLI that turns common WSL/Linux developer-environment failures into a concise Markdown or JSON diagnostic report.
+
+It checks WSL detection, essential tooling, stale `PATH` entries, disk pressure, Docker daemon availability, listening TCP ports, and NVIDIA GPU visibility. It inventories environment-variable **names only**—never values.
+
+## Why it exists
+
+Diagnosing a development environment often means stitching together shell commands, half-remembered setup steps, and error messages. This tool provides a repeatable baseline report with prioritized, actionable remediation without changing the host.
+
+## Features
+
+- WSL-aware platform detection
+- Python, uv, Node, npm, Git, Docker, and Bun availability checks
+- Missing `PATH` directory detection
+- Root filesystem capacity check
+- Docker daemon connectivity check
+- Listening TCP-port inventory
+- NVIDIA GPU visibility check through `nvidia-smi`
+- Environment-variable name inventory with secret-like names counted but never exposed as values
+- Markdown and JSON output
+- Exit thresholds for CI or shell automation
+
+## Demo
+
+```text
+$ wsl-doctor --format markdown --output -
+# WSL Dev Environment Doctor Report
+
+## Summary
+- ✅ Pass: 5
+- ⚠️ Warnings: 2
+- ❌ Failures: 0
+- ℹ️ Informational: 1
+
+## Prioritized remediation
+1. **docker** — Start Docker Desktop and enable WSL integration...
+```
+
+## Quick start
+
+Requires Python 3.10+ and [uv](https://docs.astral.sh/uv/).
+
+```bash
+git clone https://github.com/rriordan/wsl-dev-doctor.git
+cd wsl-dev-doctor
+uv sync --all-groups
+uv run wsl-doctor --format markdown --output wsl-doctor-report.md
+```
+
+Print a JSON report instead:
+
+```bash
+uv run wsl-doctor --format json --output -
+```
+
+Fail a script if a warning or failure is present:
+
+```bash
+uv run wsl-doctor --fail-on warn --output -
+```
+
+## Example output
+
+See [`examples/sample-report.md`](examples/sample-report.md).
+
+## How it works
+
+The CLI gathers a small, explicit set of local signals using standard tools such as `ss`, `docker`, and `nvidia-smi`. Each diagnostic produces a status, evidence suitable for structured output, and remediation where action is warranted. The report renderer keeps those signals usable by humans and automation alike.
+
+## Tests
+
+```bash
+make check
+make test
+```
+
+## Roadmap
+
+- Windows-host companion checks through `wsl.exe --status`
+- Opt-in redacted support bundles with a review preview
+- Recorded fixtures for WSL1, WSL2, Docker Desktop, and Docker Engine scenarios
+- GitHub release and CI badge after hosted verification
+
+## Limitations
+
+- It performs Linux-side checks only; it cannot fully diagnose Windows host settings from inside WSL.
+- Docker and GPU results depend on their respective CLIs being installed and accessible.
+- Port inspection is limited to TCP listeners available through `ss`.
+- It gives remediation guidance but never applies changes.
+
+## Security and privacy
+
+The tool is intentionally read-only. It does not read shell history, `.env` files, credentials, or configuration files. It does not print environment-variable values. Review reports before sharing because ordinary version and system details can still be operationally sensitive. See [`SECURITY.md`](SECURITY.md).
+
+## AI-assisted development note
+
+This project was built with AI-assisted development and human review. It emphasizes a narrow scope, deterministic checks, testability, and transparent limitations rather than claims of production readiness.
