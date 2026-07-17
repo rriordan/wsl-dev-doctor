@@ -1,5 +1,8 @@
 # WSL Dev Environment Doctor
 
+[![CI](https://github.com/rriordan/wsl-dev-doctor/actions/workflows/ci.yml/badge.svg)](https://github.com/rriordan/wsl-dev-doctor/actions/workflows/ci.yml)
+[![Latest release](https://img.shields.io/github/v/release/rriordan/wsl-dev-doctor?display_name=tag)](https://github.com/rriordan/wsl-dev-doctor/releases/latest)
+
 A safe, read-only CLI that turns common WSL/Linux developer-environment failures into a concise Markdown or JSON diagnostic report.
 
 It checks WSL detection, essential tooling, stale `PATH` entries, disk pressure, Docker daemon availability, listening TCP ports, and NVIDIA GPU visibility. It inventories environment-variable **names only**—never values.
@@ -99,9 +102,7 @@ See [`examples/sample-report.md`](examples/sample-report.md).
 
 ## Release notes
 
-The draft notes for the first MVP release are in
-[`docs/releases/v0.1.0.md`](docs/releases/v0.1.0.md). No GitHub Release or tag
-has been created yet.
+The first release, [`v0.1.0`](https://github.com/rriordan/wsl-dev-doctor/releases/tag/v0.1.0), is available now. Its full notes are in [`docs/releases/v0.1.0.md`](docs/releases/v0.1.0.md).
 
 ## How it works
 
@@ -119,7 +120,7 @@ make test
 - Windows-host companion checks through `wsl.exe --status`
 - Opt-in redacted support bundles with a review preview
 - Recorded fixtures for WSL1, WSL2, Docker Desktop, and Docker Engine scenarios
-- GitHub Release and CI badge after release approval
+- GitHub Releases and CI status are published above
 
 ## Limitations
 
