@@ -23,19 +23,11 @@ Diagnosing a development environment often means stitching together shell comman
 
 ## Demo
 
-```text
-$ wsl-doctor --format markdown --output -
-# WSL Dev Environment Doctor Report
+![Terminal demo of a representative WSL Dev Environment Doctor report](docs/demo-terminal.svg)
 
-## Summary
-- ✅ Pass: 5
-- ⚠️ Warnings: 2
-- ❌ Failures: 0
-- ℹ️ Informational: 1
-
-## Prioritized remediation
-1. **docker** — Start Docker Desktop and enable WSL integration...
-```
+The illustration is based on a real local run. It shows why the tool is useful:
+it distinguishes healthy components from actionable warnings, then offers the
+next remediation steps without changing the environment.
 
 ## Quick start
 
@@ -64,6 +56,12 @@ uv run wsl-doctor --fail-on warn --output -
 
 See [`examples/sample-report.md`](examples/sample-report.md).
 
+## Release notes
+
+The draft notes for the first MVP release are in
+[`docs/releases/v0.1.0.md`](docs/releases/v0.1.0.md). No GitHub Release or tag
+has been created yet.
+
 ## How it works
 
 The CLI gathers a small, explicit set of local signals using standard tools such as `ss`, `docker`, and `nvidia-smi`. Each diagnostic produces a status, evidence suitable for structured output, and remediation where action is warranted. The report renderer keeps those signals usable by humans and automation alike.
@@ -80,7 +78,7 @@ make test
 - Windows-host companion checks through `wsl.exe --status`
 - Opt-in redacted support bundles with a review preview
 - Recorded fixtures for WSL1, WSL2, Docker Desktop, and Docker Engine scenarios
-- GitHub release and CI badge after hosted verification
+- GitHub Release and CI badge after release approval
 
 ## Limitations
 
