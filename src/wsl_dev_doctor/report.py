@@ -4,16 +4,26 @@ import json
 from collections import Counter
 from datetime import datetime, timezone
 
+from wsl_dev_doctor.inventory import ToolInventory
 from wsl_dev_doctor.models import Check, Report
 
 _STATUS_ICON = {"pass": "✅", "warn": "⚠️", "fail": "❌", "info": "ℹ️"}
 
 
-def build_report(checks: list[Check], generated_at: str | None = None) -> Report:
+def build_report(
+    checks: list[Check],
+    inventory: list[ToolInventory] | None = None,
+    generated_at: str | None = None,
+) -> Report:
     counts = Counter(check.status for check in checks)
     summary = {status: counts[status] for status in ("pass", "warn", "fail", "info")}
     timestamp = generated_at or datetime.now(timezone.utc).isoformat(timespec="seconds")
-    return Report(generated_at=timestamp, checks=checks, summary=summary)
+    return Report(
+        generated_at=timestamp,
+        checks=checks,
+        summary=summary,
+        inventory=[tool.to_dict() for tool in inventory or []],
+    )
 
 
 def render_json(report: Report) -> str:
@@ -51,6 +61,28 @@ def render_markdown(report: Report) -> str:
         lines.extend(["", "## Prioritized remediation", ""])
         for index, check in enumerate(remediations, start=1):
             lines.append(f"{index}. **{check.id}** — {check.remediation}")
+
+    if report.inventory:
+        present = sum(tool["status"] == "present" for tool in report.inventory)
+        lines.extend(
+            [
+                "",
+                "## Tool inventory",
+                "",
+                f"{present} of {len(report.inventory)} registered tools are present. "
+                "`not_present` is inventory data, not a diagnostic error.",
+                "",
+                "| Category | Tool | Status | Version | Update |",
+                "| --- | --- | --- | --- | --- |",
+            ]
+        )
+        for tool in report.inventory:
+            status = "present" if tool["status"] == "present" else "not present"
+            version = str(tool["version"] or "—").replace("|", "\\|")
+            update = "supported" if tool["update_supported"] else "—"
+            lines.append(
+                f"| {tool['category']} | `{tool['command']}` | {status} | {version} | {update} |"
+            )
 
     lines.extend(
         [

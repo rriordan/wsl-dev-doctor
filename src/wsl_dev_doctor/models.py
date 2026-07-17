@@ -24,10 +24,12 @@ class Report:
     generated_at: str
     checks: list[Check]
     summary: dict[str, int]
+    inventory: list[dict[str, object]] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, object]:
         return {
             "generated_at": self.generated_at,
             "summary": self.summary,
             "checks": [check.to_dict() for check in self.checks],
+            "inventory": self.inventory,
         }

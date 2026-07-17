@@ -11,7 +11,7 @@ Diagnosing a development environment often means stitching together shell comman
 ## Features
 
 - WSL-aware platform detection
-- Python, uv, Node, npm, Git, Docker, and Bun availability checks
+- Comprehensive categorized inventory of 60+ package, runtime, AI coding, cloud, container, build, and editor CLIs
 - Missing `PATH` directory detection
 - Root filesystem capacity check
 - Docker daemon connectivity check
@@ -20,6 +20,7 @@ Diagnosing a development environment often means stitching together shell comman
 - Environment-variable name inventory with secret-like names counted but never exposed as values
 - Markdown and JSON output
 - Exit thresholds for CI or shell automation
+- Safe updater planning with dry-run default, built-in/custom presets, and an interactive terminal selector
 
 ## Demo
 
@@ -51,6 +52,46 @@ Fail a script if a warning or failure is present:
 ```bash
 uv run wsl-doctor --fail-on warn --output -
 ```
+
+## Tool inventory
+
+The report inventories a broad registry of developer tools. Each item is
+`present` or `not_present`; absence is a factual result, not a warning. When a
+tool is detected, the report includes its best-effort version and whether this
+release supports updating it.
+
+## Updates and presets
+
+Updates are dry-run by default and only execute when both `--apply` and `--yes`
+are supplied. Review the proposed commands first:
+
+```bash
+# Plan updates for all detected tools with a supported updater; nothing is changed.
+uv run wsl-doctor update --dry-run
+
+# Choose detected, updateable tools with arrow keys and spacebar.
+uv run wsl-doctor update --interactive
+
+# Plan an AI coding environment update.
+uv run wsl-doctor update --preset ai-dev
+
+# Save and use a custom preset containing known registry IDs.
+uv run wsl-doctor preset save my-stack --tool claude --tool codex --tool uv
+uv run wsl-doctor update --preset my-stack
+```
+
+Dedicated tool updaters are eligible by default. Broad package-manager updates
+remain gated and require an explicit flag: `--include-system-packages`,
+`--include-global-js-packages`, or `--include-homebrew`. For example, after
+reviewing the dry-run plan:
+
+```bash
+uv run wsl-doctor update --tool pnpm --include-global-js-packages --apply --yes
+```
+
+Custom presets are stored at `~/.config/wsl-dev-doctor/presets.toml`. They can
+select only registered tool IDs; arbitrary shell commands are intentionally not
+supported.
 
 ## Example output
 
