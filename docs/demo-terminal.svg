@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title description">
-  <title id="title">WSL Dev Environment Doctor terminal demo</title>
+  <title id="title">WSL Doctor terminal demo</title>
   <desc id="description">A representative terminal session showing the tool's Markdown report and prioritized remediation.</desc>
   <rect width="1200" height="760" rx="18" fill="#0d1117"/>
   <rect width="1200" height="56" rx="18" fill="#161b22"/>
@@ -7,7 +7,7 @@
   <text x="120" y="35" fill="#c9d1d9" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="20">wsl-dev-doctor — WSL terminal</text>
   <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="21">
     <text x="42" y="105" fill="#7ee787">$</text><text x="70" y="105" fill="#c9d1d9">wsl-doctor --format markdown --output -</text>
-    <text x="42" y="155" fill="#f0f6fc" font-weight="700"># WSL Dev Environment Doctor Report</text>
+    <text x="42" y="155" fill="#f0f6fc" font-weight="700"># WSL Doctor Report</text>
     <text x="42" y="205" fill="#f0f6fc" font-weight="700">## Summary</text>
     <text x="42" y="245" fill="#7ee787">✓ Pass: 4</text>
     <text x="42" y="282" fill="#d29922">! Warnings: 2</text>

@@ -1,4 +1,4 @@
-# WSL Dev Environment Doctor
+# WSL Doctor
 
 [![CI](https://github.com/rriordan/wsl-dev-doctor/actions/workflows/ci.yml/badge.svg)](https://github.com/rriordan/wsl-dev-doctor/actions/workflows/ci.yml)
 [![Latest release](https://img.shields.io/github/v/release/rriordan/wsl-dev-doctor?display_name=tag)](https://github.com/rriordan/wsl-dev-doctor/releases/latest)
@@ -27,7 +27,7 @@ Diagnosing a development environment often means stitching together shell comman
 
 ## Demo
 
-![Terminal demo of a representative WSL Dev Environment Doctor report](docs/demo-terminal.svg)
+![Terminal demo of a representative WSL Doctor report](docs/demo-terminal.svg)
 
 The illustration is based on a real local run. It shows why the tool is useful:
 it distinguishes healthy components from actionable warnings, then offers the
